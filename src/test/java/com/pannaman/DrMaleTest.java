@@ -46,12 +46,15 @@ public class DrMaleTest extends TestCase {
     }
 
     @Test
-    public void testUDFNullCheck() throws IOException {
+    public void testUDFNullCheck() {
         try {//CREATE NEW INSTANCE OF METHOD
             DrMale example = new DrMale();
 
+            String output = example.exec(null);
+
+
             //PASS TEST IF NULL IS RECEIVED
-            assertNull(example.exec(null));
+            assertNull(output);
         } catch (Exception e) {
             System.out.println("Dr-Male test has thrown and exception on the testUDFNullCheck method " + e);
         }
@@ -63,7 +66,7 @@ public class DrMaleTest extends TestCase {
 
             //SETTING WHAT YOU WANT IN AND OUT OF TEST
             String in = "";
-            String expected = null;
+
 
             //MAKING THE INPUT STRING INTO A TUPLE THAT IS NEEDED FOR UDF INPUT
             Tuple input = DefaultTupleFactory.getInstance().newTuple(in);
@@ -84,7 +87,7 @@ public class DrMaleTest extends TestCase {
 
             //SETTING WHAT YOU WANT IN AND OUT OF TEST
             String in = "ievbifubcibew";
-            String expected = "Java Sucks Balls";
+            String expected = null;
 
             //MAKING THE INPUT STRING INTO A TUPLE THAT IS NEEDED FOR UDF INPUT
             Tuple input = DefaultTupleFactory.getInstance().newTuple(in);
@@ -93,7 +96,7 @@ public class DrMaleTest extends TestCase {
             String output = example.exec(input);
 
             //IF INPUT AND OUTPUT MATCH WHAT YOU ARE EXPECTING, PASS THE TEST
-            assertTrue(output.equals(expected));
+            assertNull(output);
 
         } catch (Exception e) {
             System.out.println("Dr-Male test has thrown and exception on the testUDFEmptyStringCheck method " + e);

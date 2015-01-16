@@ -3,16 +3,9 @@ package com.pannaman;
 
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.Tuple;
-import org.apache.pig.data.TupleFactory;
 import org.apache.hadoop.hive.ql.exec.Description;
-import org.apache.pig.data.DataType;
-import org.apache.pig.impl.logicalLayer.schema.Schema;
-import org.apache.pig.impl.logicalLayer.FrontendException;
-import org.apache.pig.FuncSpec;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
 
 
 @Description(
@@ -21,21 +14,21 @@ import java.util.ArrayList;
 )
 public class DrMale extends EvalFunc<String> {
 
-    public String exec(Tuple input) throws IOException {
+    public String exec(Tuple input) throws IOException, NullPointerException {
 
 
-        if (input == null || input.size() == 0 || input.get(0) == null || input.get(0) == "") {
+        if (input.size() == 0 || input.get(0) == "" || input.get(0) == null || input == null || input.get(0).toString() == null) {
             return null;
         }
 
 
         try {
 
-            String Doc = (String) input.get(0);
+            String Doc = input.get(0).toString();
             String female = "Female";
             String male = "Male";
 
-            if (Doc.toLowerCase().equals("dr-male") ) {
+            if (Doc.toLowerCase().equals("dr-male")) {
                 return male;
             }
 
@@ -43,7 +36,7 @@ public class DrMale extends EvalFunc<String> {
                 return female;
             }
 
-            if (Doc.toLowerCase().equals( "mr")) {
+            if (Doc.toLowerCase().equals("mr")) {
                 return male;
             }
 
@@ -57,35 +50,37 @@ public class DrMale extends EvalFunc<String> {
 
             if (Doc.toLowerCase().equals("ms")) {
                 return female;
-            }
-            else {
+            } else {
                 return null;
             }
-        } catch (Exception e) {
-            throw new IOException("DrMale has an error " + e);
+        } catch (IOException e) {
+            throw new IOException("DrMale has an IOerror " + e);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("DrMale has a null error " + e);
         }
 
     }
 
-    /**
+    /*
      * This method gives a name to the column.
      *
      * @param input - schema of the input data
      * @return schema of the input data
-     */
+
+
     @Override
     public Schema outputSchema(Schema input) {
-        return new Schema(new Schema.FieldSchema(getSchemaName(this.getClass().getName().toLowerCase(), input), DataType.CHARARRAY));
+        return new Schema(new Schema.FieldSchema(getSchemaName(this.getClass().getName().toLowerCase(), input), DataType.CHARARRAY, DataType.NULL));
     }
-
+*/
     /* (non-Javadoc)
      * @see org.apache.pig.EvalFunc#getArgToFuncMapping()
-     */
+
     @Override
     public List<FuncSpec> getArgToFuncMapping() throws FrontendException {
         List<FuncSpec> funcList = new ArrayList<FuncSpec>();
         funcList.add(new FuncSpec(this.getClass().getName(), new Schema(new Schema.FieldSchema(null, DataType.CHARARRAY))));
 
         return funcList;
-    }
+    }*/
 }
